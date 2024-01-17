@@ -1,7 +1,7 @@
 // GENERATED CODE -- DO NOT EDIT!
 
 'use strict';
-var grpc = require('grpc');
+var grpc = require('@grpc/grpc-js');
 var api_grpc_account_profile_pb = require('../../api/grpc/account_profile_pb.js');
 
 function serialize_payed_grpc_account_profiles_DebitAccountProfileRequest(arg) {
