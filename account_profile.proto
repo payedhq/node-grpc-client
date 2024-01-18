@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package payed_grpc.account_profiles;
+
+option go_package = "github.com/payedhq/backend/pkg/grpc";
+
+message  DebitAccountProfileRequest {
+  string reference = 1;
+  int64 originAccountProfileId = 2;
+  int64 destinationAccountProfileId = 3;
+  double amount = 4;
+  string purpose = 5;
+}
+
+enum DebitAccountProfileStatus {
+  Pending = 0;
+  Successful = 1;
+  Failed = 2;
+}
+
+message DebitAccountProfileResponse {
+  string reference = 1;
+  int64 originAccountProfileId = 2;
+  optional int64 originAccountProfileTransactionId = 3;
+  int64 destinationAccountProfileId = 4;
+  double amount = 5;
+  string purpose = 6;
+  optional DebitAccountProfileStatus status = 7;
+  int64 createdAt = 8;
+  optional int64 completedAt = 9;
+}
+
+message ReverseDebitAccountProfileRequest {
+  string reference = 1;
+  string reason = 7;
+}
+
+message ReverseDebitAccountProfileResponse {
+  string reference = 1;
+  int64 originAccountProfileId = 2;
+  optional int64 originAccountProfileReversedTransactionId = 3;
+  int64 destinationAccountProfileId = 4;
+  optional int64 destinationAccountProfileReversedTransactionId = 5;
+  double amount = 6;
+  string reason = 7;
+  optional DebitAccountProfileStatus status = 8;
+  int64 createdAt = 9;
+  optional int64 completedAt = 10;
+}
+
+message FetchTransferByReferenceRequest {
+  string reference = 1;
+}
+
+service AccountProfile {
+  rpc ProfileToProfileTransfer(DebitAccountProfileRequest) returns (DebitAccountProfileResponse) {}
+  rpc FetchProfileToProfileTransferByReference(FetchTransferByReferenceRequest) returns (DebitAccountProfileResponse) {}
+}
