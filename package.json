@@ -1,6 +1,6 @@
 {
   "name": "payed-grpc",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Payed grpc client",
   "dependencies": {
     "@types/google-protobuf": "^3.2.7",
