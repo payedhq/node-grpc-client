@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package payed_grpc.account_profiles;
 
+option java_multiple_files = true;
+option java_package = "co.getpayed.grpc.account_profiles";
+option java_outer_classname = "PayedGrpcApi";
+
 option go_package = "github.com/payedhq/backend/pkg/grpc";
 
 message  DebitAccountProfileRequest {
@@ -52,7 +56,48 @@ message FetchTransferByReferenceRequest {
   string reference = 1;
 }
 
+message ValidateAccessTokenForProfileRequest {
+  string accessToken = 1;
+  int64 accountProfileId = 2;
+}
+
+message ValidateAccessTokenForProfileResponse {
+  bool isValid = 1;
+  bool canAccessProfile = 2;
+}
+
+message FetchProfileBalanceRequest {
+  int64 accountProfileId = 1;
+}
+
+message FetchProfileBalanceResponse {
+  int64 accountProfileId = 1;
+  double availableBalance = 2;
+}
+
+enum NotificationChannels {
+  Unknown = 0;
+  PushNotification = 1;
+  Email = 2;
+  Sms = 3;
+}
+
+message NotifyProfileRequest {
+  int64 accountProfileId = 1;
+  string title = 2;
+  string body = 3;
+  repeated NotificationChannels channels = 4;
+}
+
+message NotifyProfileResponse {
+  int64 notificationId = 1;
+  string deliveredAt = 2;
+}
+
 service AccountProfile {
   rpc ProfileToProfileTransfer(DebitAccountProfileRequest) returns (DebitAccountProfileResponse) {}
   rpc FetchProfileToProfileTransferByReference(FetchTransferByReferenceRequest) returns (DebitAccountProfileResponse) {}
+  rpc ValidateAccessTokenForProfile(ValidateAccessTokenForProfileRequest) returns (ValidateAccessTokenForProfileResponse) {}
+  rpc FetchProfileBalance(FetchProfileBalanceRequest) returns (FetchProfileBalanceResponse) {}
+  rpc NotifyProfile(NotifyProfileRequest) returns (NotifyProfileResponse) {}
 }
